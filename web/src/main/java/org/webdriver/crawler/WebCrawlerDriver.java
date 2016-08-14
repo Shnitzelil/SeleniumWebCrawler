@@ -41,9 +41,6 @@ public class WebCrawlerDriver implements WrapsDriver {
         this.desiredCapabilities = desiredCapabilities;
     }
 
-    /**
-     * The method is synchronized as a workaround to issue with initiating two webdrivers at the same time.
-     */
     public void initialize() {
         long startTime = System.currentTimeMillis();
         try {

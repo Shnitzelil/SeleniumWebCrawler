@@ -32,7 +32,7 @@ public class ApplicationCrawler {
     private static final int FUSE_CLICKS_IN_PATH = NumberUtils.toInt(System.getProperty("fuse.clicks"), 10);
 
     private static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
-    public static final String TARGET_TEST_CLASSES_GENERATED_STORIES = "target/test-classes/generatedStories";
+    public static final String TARGET_TEST_CLASSES_GENERATED_FLOWS = "target/test-classes/generatedFlows";
 
     private final DesiredCapabilities desiredCapabilities;
     private final WebCrawlerDriver webCrawlerDriver;
@@ -146,14 +146,14 @@ public class ApplicationCrawler {
                 site.addAction(CrawlerAction.getUrl(site.getUrl())).doIt(webCrawlerDriver).reportSuccessful();
             }
         }
-        this.site.writeStory(TARGET_TEST_CLASSES_GENERATED_STORIES);
+        this.site.writeStory(TARGET_TEST_CLASSES_GENERATED_FLOWS);
     }
 
     @After
     public void end() {
         this.webCrawlerDriver.quit();
         this.site.end();
-        ApplicationCrawlerHelper.write(TARGET_TEST_CLASSES_GENERATED_STORIES + "/flowDurations.properties", site.getSiteName(), String.valueOf(currentTimeMillis() - startTestTime));
+        ApplicationCrawlerHelper.write(TARGET_TEST_CLASSES_GENERATED_FLOWS + "/flowDurations.properties", site.getSiteName(), String.valueOf(currentTimeMillis() - startTestTime));
     }
 
 }

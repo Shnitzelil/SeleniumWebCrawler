@@ -27,13 +27,13 @@ import java.util.concurrent.TimeUnit;
 public class SiteExecution extends Suite {
 
 	private static final int AWAIT_TERMINATION_TIMEOUT = 
-			Integer.getInteger("parallelizedExecutionAwaitTerminationTimeout", 720);
+			Integer.getInteger("paralleledExecutionAwaitTerminationTimeout", 720);
     private static final int maximumThreads =
-            Integer.getInteger("parallelizedExecutionMaximumThreads", 0);
+            Integer.getInteger("paralleledExecutionMaximumThreads", 0);
 	private static final TimeUnit delayDurationUnit =
 			getDelayDurationUnit(TimeUnit.SECONDS);
 	private static final int delayDurationValue =
-			Integer.getInteger("parallelizedExecutionDelayDuration", 15);
+			Integer.getInteger("paralleledExecutionDelayDuration", 15);
 
 	private static TimeUnit getDelayDurationUnit(TimeUnit defaultTimeUnit) {
 		String parallelizedExecutionDelayDurationUnit = System.getProperty("parallelizedExecutionDelayDurationUnit", defaultTimeUnit.name()).toUpperCase();

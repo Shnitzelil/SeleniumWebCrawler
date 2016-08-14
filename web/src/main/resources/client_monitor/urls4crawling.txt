@@ -1,0 +1,2 @@
+Site_To_Crawl=http://www.crawl.here.com
+#Site_To_Skip=http://www.skip.me/

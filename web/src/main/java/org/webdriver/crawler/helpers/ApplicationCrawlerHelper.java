@@ -1,7 +1,5 @@
 package org.webdriver.crawler.helpers;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.webdriver.crawler.ApplicationCrawler;
 import org.webdriver.crawler.Site;
 
@@ -9,6 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +47,7 @@ public class ApplicationCrawlerHelper {
             System.out.println(file.getAbsolutePath());
             List<String> strings = null;
             if (file.isFile()) {
-                strings = FileUtils.readLines(file, "UTF-8");
+                strings = Files.readAllLines(file.toPath(), Charset.forName("UTF-8"));
             } else {
                 strings = Arrays.asList(property.split(";"));
             }
@@ -56,7 +56,7 @@ public class ApplicationCrawlerHelper {
                     continue;
                 }
                 String[] elements = currentSite.split("=", 2);
-                if (!ArrayUtils.isEmpty(elements)) {
+                if (elements != null && elements.length > 0) {
                     String siteUrl, siteName;
 
                     if (elements.length == 1) {
@@ -103,7 +103,7 @@ public class ApplicationCrawlerHelper {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            FileUtils.deleteQuietly(lockFile);
+            try {Files.deleteIfExists(lockFile.toPath());} catch (Exception e) {}
         }
     }
 

@@ -1,8 +1,7 @@
 package org.webdriver.crawler;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class Site {
         try {
             File file = new File(outputFolder, siteName + ".txt");
             file.getParentFile().mkdirs();
-            FileUtils.writeLines(file, lines);
+            Files.write(file.toPath(), lines);
         } catch (Exception e) {
             System.out.println("Site: Ignoring exception in the writeStory method, cause: " + e.getCause().getMessage());
         }

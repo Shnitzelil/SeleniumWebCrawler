@@ -10,10 +10,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <selenium.version>2.53.1</selenium.version>
+        <webdriver.version>3.13.0</webdriver.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <compiler.source>1.7</compiler.source>
-        <compiler.target>1.7</compiler.target>
+        <compiler.source>1.8</compiler.source>
+        <compiler.target>1.8</compiler.target>
     </properties>
 
     <modules>
@@ -54,7 +54,7 @@
             <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-java</artifactId>
-                <version>${selenium.version}</version>
+                <version>${webdriver.version}</version>
             </dependency>
 
             <dependency>

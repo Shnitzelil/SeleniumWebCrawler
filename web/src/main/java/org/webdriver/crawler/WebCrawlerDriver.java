@@ -1,17 +1,22 @@
 package org.webdriver.crawler;
 
 import com.google.common.base.Function;
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.webdriver.crawler.helpers.ClickOnElement;
@@ -19,6 +24,7 @@ import org.webdriver.crawler.helpers.FindVisibleElements;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -62,18 +68,18 @@ public class WebCrawlerDriver implements WrapsDriver {
         String browserName = desiredCapabilities.getBrowserName();
         switch (browserName.toLowerCase()) {
             case BrowserType.CHROME:
-                return new ChromeDriver(getDesiredCapabilities());
+                return new ChromeDriver(new ChromeOptions().merge(getDesiredCapabilities()));
             case BrowserType.IE:
-                return new InternetExplorerDriver(getDesiredCapabilities());
+                return new InternetExplorerDriver(new InternetExplorerOptions(getDesiredCapabilities()));
             case BrowserType.EDGE:
-                return new EdgeDriver(getDesiredCapabilities());
+                return new EdgeDriver(new EdgeOptions().merge(getDesiredCapabilities()));
             case BrowserType.SAFARI:
-                return new SafariDriver(getDesiredCapabilities());
+                return new SafariDriver(new SafariOptions().merge(getDesiredCapabilities()));
             case BrowserType.OPERA_BLINK:
-                return new OperaDriver(getDesiredCapabilities());
+                return new OperaDriver(new OperaOptions().merge(getDesiredCapabilities()));
             case BrowserType.FIREFOX:
             default:
-                return new FirefoxDriver(getDesiredCapabilities());
+                return new FirefoxDriver(new FirefoxOptions().merge(getDesiredCapabilities()));
         }
     }
 
@@ -116,7 +122,7 @@ public class WebCrawlerDriver implements WrapsDriver {
         List<String> list = new ArrayList<>();
         for (WebElement element : elements) {
             String text = element.getText();
-            if (StringUtils.isNotBlank(text))
+            if (text != null && !text.trim().isEmpty())
                 list.add(text);
         }
 //        System.out.println("Found " + elements.size() + " from that we have " + list.size() + " with text " + list.toString());
@@ -161,8 +167,8 @@ public class WebCrawlerDriver implements WrapsDriver {
         Collection<Class<? extends Throwable>> c = new ArrayList<Class<? extends Throwable>>(
                 Arrays.asList(StaleElementReferenceException.class, NoSuchElementException.class, ElementNotVisibleException.class));
         return new FluentWait<WebDriver>(webDriver)
-                .withTimeout(timeoutInSeconds, TimeUnit.SECONDS)
-                .pollingEvery(polingInMilli, TimeUnit.MILLISECONDS)
+                .withTimeout(Duration.ofSeconds(timeoutInSeconds))
+                .pollingEvery(Duration.ofMillis(polingInMilli))
                 .withMessage(message)
                 .ignoreAll(c);
     }

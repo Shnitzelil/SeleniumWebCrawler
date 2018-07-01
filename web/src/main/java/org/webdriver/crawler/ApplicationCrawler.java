@@ -1,7 +1,5 @@
 package org.webdriver.crawler;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +12,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.webdriver.crawler.executer.SiteExecution;
 import org.webdriver.crawler.helpers.ApplicationCrawlerHelper;
 
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -27,9 +26,9 @@ import static java.lang.System.currentTimeMillis;
 public class ApplicationCrawler {
 
     private static final Logger log = Logger.getLogger(ApplicationCrawler.class.getName());
-    private static final long FUSE_TIMEOUT = NumberUtils.toLong(System.getProperty("fuse.timeout.seconds"), 250L);
-    private static final int FUSE_PATHS = NumberUtils.toInt(System.getProperty("fuse.paths"), 4);
-    private static final int FUSE_CLICKS_IN_PATH = NumberUtils.toInt(System.getProperty("fuse.clicks"), 10);
+    private static final long FUSE_TIMEOUT = toLong("fuse.timeout.seconds", 250L);
+    private static final int FUSE_PATHS = toInt("fuse.paths", 4);
+    private static final int FUSE_CLICKS_IN_PATH = toInt("fuse.clicks", 10);
 
     private static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
     public static final String TARGET_TEST_CLASSES_GENERATED_FLOWS = "target/test-classes/generatedFlows";
@@ -39,6 +38,20 @@ public class ApplicationCrawler {
     private final Site site;
 
     private long startTestTime;
+
+    private static long toLong(String key, long defaultValue) {
+        try {
+            return Long.parseLong(System.getProperty(key));
+        } catch (NumberFormatException nfe) { }
+        return defaultValue;
+    }
+
+    private static int toInt(String key, int defaultValue) {
+        try {
+            return Integer.parseInt(System.getProperty(key));
+        } catch (NumberFormatException nfe) { }
+        return defaultValue;
+    }
 
     public ApplicationCrawler(Site site) {
         this.webCrawlerDriver = new WebCrawlerDriver(this.desiredCapabilities = initCapabilities());
@@ -81,7 +94,7 @@ public class ApplicationCrawler {
             int retry = 6;
             while (retry > 0) {
                 List<String> temp = webCrawlerDriver.getText(By.xpath("//a[text() and @href and not(contains(@href, 'mailto'))]"));
-                if (CollectionUtils.isEqualCollection(elements, temp)) {
+                if (temp.containsAll(elements) && elements.containsAll(temp)) {
                     break;
                 } else {
                     elements = temp;

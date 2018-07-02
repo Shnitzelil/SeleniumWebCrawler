@@ -1,8 +1,8 @@
-# SeleniumWebCrawler
-Using Selenium to do Web Crawling
+# WebDriverWebCrawler
+Using WebDriver to do Web Crawling
 
 
-In this little project we give an idea of using Selenium/WebDriver as a web crawler.
+In this little project we give an idea of using WebDriver as a web crawler.
  
 1. Clone this project
 2. Add your site(s) to the url4crawling.txt file
